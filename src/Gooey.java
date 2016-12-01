@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.InputMismatchException;
 import javax.swing.JFrame;
@@ -20,7 +22,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JMenuBar;
 import javax.swing.*;
-
+import javax.imageio.*;
 
 public class Gooey extends JFrame {
 
@@ -54,7 +56,7 @@ public class Gooey extends JFrame {
         super("Temperature Conversion Program");
 
 /////////////////////////////////////// Exit ///////////////////////////////////
-        JMenu exitMenu = new JMenu( "Exit" ); // create 'Exit' on menu
+        JButton exitMenu = new JButton( "Exit" ); // create 'Exit' on menu
         exitMenu.setMnemonic( 'e' ); // set Exit mnemonic to e
         exitMenu.addActionListener(
 
@@ -63,7 +65,7 @@ public class Gooey extends JFrame {
                     // terminate application when user clicks Exit
                     public void actionPerformed( ActionEvent event )
                     {
-                        System.exit( 0 ); // exit application
+                        System.exit(0); // exit application
                     } // end method actionPerformed
                 }
         ); // end  addActionListener
@@ -84,7 +86,7 @@ public class Gooey extends JFrame {
         // final ImageIcon icon = new ImageIcon(new URL("http://i3.kym-cdn.com/photos/images/original/001/093/601/0af.jpg"));
         // JOptionPane.showMessageDialog(null, "Blah blah blah", "About", JOptionPane.INFORMATION_MESSAGE, icon);
 
-
+        // "http://i3.kym-cdn.com/photos/images/original/001/093April/7/1995/601/0af.jpg"
         aboutItem.addActionListener(
 
                 new ActionListener() // anonymous inner class
@@ -92,18 +94,24 @@ public class Gooey extends JFrame {
                     // display message dialog when user selects About...
                     public void actionPerformed( ActionEvent event )
                     {
-                        final ImageIcon icon = new ImageIcon(new URL("http://i3.kym-cdn.com/photos/images/original/001/093/601/0af.jpg"));
-                        JOptionPane.showMessageDialog( new JFrame(),
-                                "Program name: OMG it's snowing!!!\n" +
-                                "Author: Aberaham Licon\n" +
-                                "Version Number: 9000.0.1\n" +
-                                "Release Date: April/7/1995\n" +
-                                "Tech Support: 0118-999-881-999-119-725... 3\n" +
-                                "Website: https://goo.gl/01oGev\n",
+                        try {
+                            final ImageIcon icon = new ImageIcon(ImageIO.read(new URL("http://www.webgoldguide.com/blog/home/.carrera/neilalan/webgoldguide.com/blog/wp-content/uploads/2010/11/logos2.jpg")));
+                            JOptionPane.showMessageDialog(new JFrame(),
+                                    "Program name: OMG it's snowing!!!\n" +
+                                            "Author: Abraham Lincoln\n" +
+                                            "Version Number: 9000.0.1\n" +
+                                            "Release Date: April/17/1998\n" +
+                                            "Tech Support: 0118-999-881-999-119-725... 3\n" +
+                                            "Website: https://goo.gl/01oGev\n",
 
-                                "About", JOptionPane.INFORMATION_MESSAGE, icon);
+                                    "About", JOptionPane.INFORMATION_MESSAGE, icon);
+                        } catch (MalformedURLException e) {
+                            System.exit(1);
+                        } catch (IOException e) {
+                            System.exit(2);
+                        }
                     } // end method actionPerformed
-                } // end anonymous inner class
+                }
         ); // end call to addActionListener
 
         helpMenu.addActionListener(
@@ -121,7 +129,7 @@ public class Gooey extends JFrame {
         bar.add( helpMenu ); // add file menu to menu bar
 
 /////////////////////////////////////// Clear ///////////////////////////////////
-        JMenu clearMenu = new JMenu( "Clear" ); // create 'Clear' on menu
+        JButton clearMenu = new JButton( "Clear" ); // create 'Clear' on menu
         clearMenu.setMnemonic( 'c' ); // set Clear mnemonic to c
         clearMenu.addActionListener(
 
@@ -130,7 +138,9 @@ public class Gooey extends JFrame {
                     // terminate application when user clicks Exit
                     public void actionPerformed( ActionEvent event )
                     {
-                        System.exit( 0 ); // exit application
+                        ComboBoxResult = "";
+                        ComboBoxResult2 = "";
+                        answer = 0;
                     } // end method actionPerformed
                 }
         ); // end  addActionListener
@@ -138,7 +148,7 @@ public class Gooey extends JFrame {
         bar.add( clearMenu ); // add file menu to menu bar
 
 /////////////////////////////////////// Run ///////////////////////////////////
-        JMenu runMenu = new JMenu( "Run" ); // create 'Run' on menu
+        JButton runMenu = new JButton( "Run"); // create 'Run' on menu
         runMenu.setMnemonic( 'r' ); // set Run mnemonic to r
         runMenu.addActionListener(
 
@@ -151,8 +161,10 @@ public class Gooey extends JFrame {
                     } // end method actionPerformed
                 }
         ); // end  addActionListener
-
+    //    runMenu.setBackground(Color.LIGHT_GRAY);
         bar.add( runMenu ); // add file menu to menu bar
+//bar.add(new JButton());
+/////////////////////////////////////// Temp Program ///////////////////////////////////
 
         setLayout(new FlowLayout());
 
