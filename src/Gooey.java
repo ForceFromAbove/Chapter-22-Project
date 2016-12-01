@@ -1,16 +1,39 @@
+import java.awt.Color;
 import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import java.net.URL;
 import java.util.InputMismatchException;
-import javax.swing.JFrame;              // basic window features (three buttons upper right etc)
-import javax.swing.JLabel;              // displays text/image (pop up window)
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import javax.swing.ButtonGroup;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JMenuBar;
+import javax.swing.*;
 
 
 public class Gooey extends JFrame {
+
+    private final Color colorValues[] =
+            { Color.BLACK, Color.BLUE, Color.RED, Color.GREEN };
+    private JRadioButtonMenuItem colorItems[]; // color menu items
+    private JRadioButtonMenuItem fonts[]; // font menu items
+    private JCheckBoxMenuItem styleItems[]; // font style menu items
+    private JLabel displayJLabel; // displays sample text
+    private ButtonGroup fontButtonGroup; // manages font menu items
+    private ButtonGroup colorButtonGroup; // manages color menu items
+    private int style; // used to create style for font
+
     private final JTextField textField;
     private JLabel label1 = new JLabel("Hi");    // label with just text
 
@@ -28,7 +51,109 @@ public class Gooey extends JFrame {
 
     public Gooey() {
 
-        super("Temperature Conversion");
+        super("Temperature Conversion Program");
+
+/////////////////////////////////////// Exit ///////////////////////////////////
+        JMenu exitMenu = new JMenu( "Exit" ); // create 'Exit' on menu
+        exitMenu.setMnemonic( 'e' ); // set Exit mnemonic to e
+        exitMenu.addActionListener(
+
+                new ActionListener() // anonymous inner class
+                {
+                    // terminate application when user clicks Exit
+                    public void actionPerformed( ActionEvent event )
+                    {
+                        System.exit( 0 ); // exit application
+                    } // end method actionPerformed
+                }
+        ); // end  addActionListener
+
+        JMenuBar bar = new JMenuBar(); // create menu bar
+        setJMenuBar( bar ); // add menu bar to application
+        bar.add( exitMenu ); // add file menu to menu bar
+
+/////////////////////////////////////// Help ///////////////////////////////////
+        JMenu helpMenu = new JMenu( "Help" ); // create 'Help' on menu
+        helpMenu.setMnemonic( 'h' ); // set Help mnemonic to h
+
+        // create About... menu item
+        JMenuItem aboutItem = new JMenuItem( "About..." );
+        aboutItem.setMnemonic( 'a' ); // set mnemonic to A
+        helpMenu.add( aboutItem ); // add about item to file menu
+
+        // final ImageIcon icon = new ImageIcon(new URL("http://i3.kym-cdn.com/photos/images/original/001/093/601/0af.jpg"));
+        // JOptionPane.showMessageDialog(null, "Blah blah blah", "About", JOptionPane.INFORMATION_MESSAGE, icon);
+
+
+        aboutItem.addActionListener(
+
+                new ActionListener() // anonymous inner class
+                {
+                    // display message dialog when user selects About...
+                    public void actionPerformed( ActionEvent event )
+                    {
+                        final ImageIcon icon = new ImageIcon(new URL("http://i3.kym-cdn.com/photos/images/original/001/093/601/0af.jpg"));
+                        JOptionPane.showMessageDialog( new JFrame(),
+                                "Program name: OMG it's snowing!!!\n" +
+                                "Author: Aberaham Licon\n" +
+                                "Version Number: 9000.0.1\n" +
+                                "Release Date: April/7/1995\n" +
+                                "Tech Support: 0118-999-881-999-119-725... 3\n" +
+                                "Website: https://goo.gl/01oGev\n",
+
+                                "About", JOptionPane.INFORMATION_MESSAGE, icon);
+                    } // end method actionPerformed
+                } // end anonymous inner class
+        ); // end call to addActionListener
+
+        helpMenu.addActionListener(
+
+                new ActionListener() // anonymous inner class
+                {
+                    // terminate application when user clicks Exit
+                    public void actionPerformed( ActionEvent event )
+                    {
+                        System.exit( 0 ); // exit application
+                    } // end method actionPerformed
+                }
+        ); // end  addActionListener
+
+        bar.add( helpMenu ); // add file menu to menu bar
+
+/////////////////////////////////////// Clear ///////////////////////////////////
+        JMenu clearMenu = new JMenu( "Clear" ); // create 'Clear' on menu
+        clearMenu.setMnemonic( 'c' ); // set Clear mnemonic to c
+        clearMenu.addActionListener(
+
+                new ActionListener() // anonymous inner class
+                {
+                    // terminate application when user clicks Exit
+                    public void actionPerformed( ActionEvent event )
+                    {
+                        System.exit( 0 ); // exit application
+                    } // end method actionPerformed
+                }
+        ); // end  addActionListener
+
+        bar.add( clearMenu ); // add file menu to menu bar
+
+/////////////////////////////////////// Run ///////////////////////////////////
+        JMenu runMenu = new JMenu( "Run" ); // create 'Run' on menu
+        runMenu.setMnemonic( 'r' ); // set Run mnemonic to r
+        runMenu.addActionListener(
+
+                new ActionListener() // anonymous inner class
+                {
+                    // terminate application when user clicks Exit
+                    public void actionPerformed( ActionEvent event )
+                    {
+                        System.exit( 0 ); // exit application
+                    } // end method actionPerformed
+                }
+        ); // end  addActionListener
+
+        bar.add( runMenu ); // add file menu to menu bar
+
         setLayout(new FlowLayout());
 
         textField = new JTextField("Temperature", 25);
