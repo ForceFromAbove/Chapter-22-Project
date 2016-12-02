@@ -310,19 +310,21 @@ public class Gooey extends JFrame {
 //bar.add(new JButton());
 /////////////////////////////////////// Temp Program ///////////////////////////////////
 
-    //    setLayout(new FlowLayout());
-
+        Font headerFont = new Font("Serif", Font.BOLD, 24);
         Font myFont = new Font("Serif", Font.PLAIN, 24);
 
         label1.setFont(myFont);
 
         JLabel title1 = new JLabel("Input and Output Temperatures:");
-        title1.setFont(myFont);
+        title1.setFont(headerFont);
         add (title1);
         JLabel title2 = new JLabel("Temperature From and Temperature To:");
-        title2.setFont(myFont);
+        title2.setFont(headerFont);
         add (title2);
 
+        boolean freezing = false;
+        boolean boiling = false;
+        boolean paperFire = false;
 
         textField = new JTextField("Temperature to Convert", 25);
         textField.setFont(myFont);
@@ -355,8 +357,18 @@ public class Gooey extends JFrame {
                 switch (ComboBoxResult2) {
                     case "Fahrenheit":                                              // gets answer from Temp_Conversion and checks for valid value
                         answer = temp_conversion.getFahrenheit();
+                        int temperatureF = (int) answer;
                         if (answer < -459.67) {
                             out_Of_Bounds = true;
+                        }
+                        if (answer >= 212) {
+                            getContentPane().setBackground(new Color(255, 0, 11));
+                        }
+                        if (answer <= 32) {
+                            getContentPane().setBackground(new Color(11, 0, 255));
+                        }
+                        if (answer < 212 && answer > 32) {
+                            getContentPane().setBackground(new Color((255 - temperatureF + 11), 0, (11 + temperatureF)));
                         }
                         break;
                     case "Celsius":
@@ -364,11 +376,31 @@ public class Gooey extends JFrame {
                         if (answer < -273.15) {
                             out_Of_Bounds = true;
                         }
+                        int temperatureC = (int) answer;
+                        if (answer >= 100) {
+                            getContentPane().setBackground(new Color(255, 0, 11));
+                        }
+                        if (answer <= 0) {
+                            getContentPane().setBackground(new Color(11, 0, 255));
+                        }
+                        if (answer < 100 && answer > 0) {
+                            getContentPane().setBackground(new Color((255 - temperatureC*2 + 30), 0, (30 + temperatureC*2)));
+                        }
                         break;
                     case "Kelvin":
                         answer = temp_conversion.getKelvin();
                         if (answer < 0) {
                             out_Of_Bounds = true;
+                        }
+                        int temperatureK = (int) (answer - 273.15);
+                        if (answer >= 373.15) {
+                            getContentPane().setBackground(new Color(255, 0, 11));
+                        }
+                        if (answer <= 273.15) {
+                            getContentPane().setBackground(new Color(11, 0, 255));
+                        }
+                        if (answer < 373.15 && answer > 273.15) {
+                            getContentPane().setBackground(new Color((255 - temperatureK*2 + 30), 0, (30 + temperatureK*2)));
                         }
                         break;
                 }
@@ -449,9 +481,11 @@ public class Gooey extends JFrame {
         label1.setToolTipText("This is what you wanted, be happy! ^.^");    // roll over text for label1
         label1.setFont(myFont);
         add(label1);
+
+        //getContentPane().setBackground( new Color() );
     }
 }
 
 /**
- * Created by aaronewing on 11/14/2016.
+ * Created by aaronewing on 12/1/2016.
  */
