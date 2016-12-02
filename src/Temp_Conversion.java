@@ -11,7 +11,7 @@ public class Temp_Conversion {
     public void setFahrenheit(double Fahrenheit) {      // set Fahrenheit
         this.Fahrenheit = Fahrenheit;
 
-        Celsius = 0.55555 *(Fahrenheit - 32);
+        Celsius = ((Fahrenheit - 32) * 5)/9;
         Kelvin = Celsius + 273.15;
     }
 
@@ -22,7 +22,7 @@ public class Temp_Conversion {
     public void setCelsius(double Celsius) {            // set Celsius
         this.Celsius = Celsius;
 
-        Fahrenheit = 1.8 * (Celsius + 32);
+        Fahrenheit = (Celsius * 1.8) + 32;
         Kelvin = Celsius + 273.15;
     }
 
@@ -34,7 +34,7 @@ public class Temp_Conversion {
         this.Kelvin = Kelvin;
 
         Celsius = Kelvin - 273.15;
-        Fahrenheit = Kelvin * 1.8 - 459.67;
+        Fahrenheit = 1.8 * (Kelvin - 273.15) + 32;
     }
 }
 
