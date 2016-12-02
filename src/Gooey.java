@@ -368,7 +368,7 @@ public class Gooey extends JFrame {
                             getContentPane().setBackground(new Color(11, 0, 255));
                         }
                         if (answer < 212 && answer > 32) {
-                            getContentPane().setBackground(new Color((255 - temperatureF + 11), 0, (11 + temperatureF)));
+                            getContentPane().setBackground(new Color((11 + temperatureF), 0, (255 - temperatureF + 11)));
                         }
                         break;
                     case "Celsius":
@@ -384,7 +384,7 @@ public class Gooey extends JFrame {
                             getContentPane().setBackground(new Color(11, 0, 255));
                         }
                         if (answer < 100 && answer > 0) {
-                            getContentPane().setBackground(new Color((255 - temperatureC*2 + 30), 0, (30 + temperatureC*2)));
+                            getContentPane().setBackground(new Color((30 + temperatureC*2), 0, (255 - temperatureC*2)));
                         }
                         break;
                     case "Kelvin":
@@ -400,7 +400,7 @@ public class Gooey extends JFrame {
                             getContentPane().setBackground(new Color(11, 0, 255));
                         }
                         if (answer < 373.15 && answer > 273.15) {
-                            getContentPane().setBackground(new Color((255 - temperatureK*2 + 30), 0, (30 + temperatureK*2)));
+                            getContentPane().setBackground(new Color((30 + temperatureK*2), 0, (255 - temperatureK*2)));
                         }
                         break;
                 }
