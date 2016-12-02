@@ -66,12 +66,13 @@ public class Gooey extends JFrame {
                     public void actionPerformed( ActionEvent event )
                     {
                         System.exit(0); // exit application
-                    } // end method actionPerformed
+                    }
                 }
         ); // end  addActionListener
 
         JMenuBar bar = new JMenuBar(); // create menu bar
         setJMenuBar( bar ); // add menu bar to application
+        exitMenu.setBackground(Color.white);
         bar.add( exitMenu ); // add file menu to menu bar
 
 /////////////////////////////////////// Help ///////////////////////////////////
@@ -83,10 +84,6 @@ public class Gooey extends JFrame {
         aboutItem.setMnemonic( 'a' ); // set mnemonic to A
         helpMenu.add( aboutItem ); // add about item to file menu
 
-        // final ImageIcon icon = new ImageIcon(new URL("http://i3.kym-cdn.com/photos/images/original/001/093/601/0af.jpg"));
-        // JOptionPane.showMessageDialog(null, "Blah blah blah", "About", JOptionPane.INFORMATION_MESSAGE, icon);
-
-        // "http://i3.kym-cdn.com/photos/images/original/001/093April/7/1995/601/0af.jpg"
         aboutItem.addActionListener(
 
                 new ActionListener() // anonymous inner class
@@ -95,16 +92,16 @@ public class Gooey extends JFrame {
                     public void actionPerformed( ActionEvent event )
                     {
                         try {
-                            final ImageIcon icon = new ImageIcon(ImageIO.read(new URL("http://www.webgoldguide.com/blog/home/.carrera/neilalan/webgoldguide.com/blog/wp-content/uploads/2010/11/logos2.jpg")));
+                            final ImageIcon icon = new ImageIcon(ImageIO.read(new URL("http://i3.kym-cdn.com/photos/images/original/001/093/601/0af.jpg")));
                             JOptionPane.showMessageDialog(new JFrame(),
-                                    "Program name: OMG it's snowing!!!\n" +
+                                    "Program name: virus.exe\n" +
                                             "Author: Abraham Lincoln\n" +
                                             "Version Number: 9000.0.1\n" +
-                                            "Release Date: April/17/1998\n" +
+                                            "Release Date: April/7/1995\n" +
                                             "Tech Support: 0118-999-881-999-119-725... 3\n" +
-                                            "Website: https://goo.gl/01oGev\n",
-
+                                            "Website: https://goo.gl/01oGev\n",                     // can you do URL link easily?
                                     "About", JOptionPane.INFORMATION_MESSAGE, icon);
+
                         } catch (MalformedURLException e) {
                             System.exit(1);
                         } catch (IOException e) {
@@ -114,17 +111,69 @@ public class Gooey extends JFrame {
                 }
         ); // end call to addActionListener
 
-        helpMenu.addActionListener(
+        // create change settings type menu item
+        JMenuItem settingsItem = new JMenuItem( "Change Format Type" );
+        settingsItem.setMnemonic( 'f' ); // set mnemonic to f
+        helpMenu.add( settingsItem ); // add about item to file menu
+
+        settingsItem.addActionListener(
 
                 new ActionListener() // anonymous inner class
                 {
-                    // terminate application when user clicks Exit
+                    // display message dialog when user selects About...
                     public void actionPerformed( ActionEvent event )
                     {
-                        System.exit( 0 ); // exit application
+                        try {
+                            final ImageIcon icon = new ImageIcon(ImageIO.read(new URL("http://i3.kym-cdn.com/photos/images/original/001/093/601/0af.jpg")));
+                            JOptionPane.showMessageDialog(new JFrame(),
+                                    "Program name: virus.exe\n" +
+                                            "Author: Abraham Lincoln\n" +
+                                            "Version Number: 9000.0.1\n" +
+                                            "Release Date: April/7/1995\n" +
+                                            "Tech Support: 0118-999-881-999-119-725... 3\n" +
+                                            "Website: https://goo.gl/01oGev\n",                     // can you do URL link easily?
+                                    "About", JOptionPane.INFORMATION_MESSAGE, icon);
+
+                        } catch (MalformedURLException e) {
+                            System.exit(1);
+                        } catch (IOException e) {
+                            System.exit(2);
+                        }
                     } // end method actionPerformed
                 }
-        ); // end  addActionListener
+        ); // end call to addActionListener
+
+        // create change settings type menu item
+        JMenuItem defaultItem = new JMenuItem( "Reset to Default Settings" );
+        defaultItem.setMnemonic( 'd' ); // set mnemonic to d
+        helpMenu.add( defaultItem ); // add about item to file menu
+
+        settingsItem.addActionListener(
+
+                new ActionListener() // anonymous inner class
+                {
+                    // display message dialog when user selects About...
+                    public void actionPerformed( ActionEvent event )
+                    {
+                        try {
+                            final ImageIcon icon = new ImageIcon(ImageIO.read(new URL("http://i3.kym-cdn.com/photos/images/original/001/093/601/0af.jpg")));
+                            JOptionPane.showMessageDialog(new JFrame(),
+                                    "Program name: virus.exe\n" +
+                                            "Author: Abraham Lincoln\n" +
+                                            "Version Number: 9000.0.1\n" +
+                                            "Release Date: April/7/1995\n" +
+                                            "Tech Support: 0118-999-881-999-119-725... 3\n" +
+                                            "Website: https://goo.gl/01oGev\n",                     // can you do URL link easily?
+                                    "About", JOptionPane.INFORMATION_MESSAGE, icon);
+
+                        } catch (MalformedURLException e) {
+                            System.exit(1);
+                        } catch (IOException e) {
+                            System.exit(2);
+                        }
+                    } // end method actionPerformed
+                }
+        ); // end call to addActionListener
 
         bar.add( helpMenu ); // add file menu to menu bar
 
@@ -141,10 +190,13 @@ public class Gooey extends JFrame {
                         ComboBoxResult = "";
                         ComboBoxResult2 = "";
                         answer = 0;
+
+                        label1 = new JLabel(String.format("Temperature from %s to %s is: %f", ComboBoxResult, ComboBoxResult2, answer));
+
                     } // end method actionPerformed
                 }
         ); // end  addActionListener
-
+        clearMenu.setBackground(Color.white);
         bar.add( clearMenu ); // add file menu to menu bar
 
 /////////////////////////////////////// Run ///////////////////////////////////
@@ -157,11 +209,63 @@ public class Gooey extends JFrame {
                     // terminate application when user clicks Exit
                     public void actionPerformed( ActionEvent event )
                     {
-                        System.exit( 0 ); // exit application
-                    } // end method actionPerformed
+                                try {
+                                    String temperature_Str = textField.getText();               // makes sure input is a number
+                                    double temperature = Double.parseDouble(temperature_Str);
+
+                                    switch (ComboBoxResult) {                                   // reads in temperature
+                                        case "Fahrenheit":
+                                            temp_conversion.setFahrenheit(temperature);
+                                            break;
+                                        case "Celsius":
+                                            temp_conversion.setCelsius(temperature);
+                                            break;
+                                        case "Kelvin":
+                                            temp_conversion.setKelvin(temperature);
+                                            break;
+                                    }
+
+                                } catch (InputMismatchException e) {
+                                    System.out.println("Can you please put in a number?");                 // Error message if not a number
+                                    System.exit(1);
+                                }
+
+                                switch (ComboBoxResult2) {
+                                    case "Fahrenheit":                                              // gets answer from Temp_Conversion and checks for valid value
+                                        answer = temp_conversion.getFahrenheit();
+                                        if (answer < -459.67) {
+                                            out_Of_Bounds = true;
+                                        }
+                                        break;
+                                    case "Celsius":
+                                        answer = temp_conversion.getCelsius();
+                                        if (answer < -273.15) {
+                                            out_Of_Bounds = true;
+                                        }
+                                        break;
+                                    case "Kelvin":
+                                        answer = temp_conversion.getKelvin();
+                                        if (answer < 0) {
+                                            out_Of_Bounds = true;
+                                        }
+                                        break;
+                                }
+
+                                if (ComboBoxResult == ComboBoxResult2) {                                                    // no real conversion is happening
+                                    label1 = new JLabel("I don't know what you expected...\n");
+                                    add(label1);
+                                } else if (out_Of_Bounds) {                                                                 // temperatures are out of bounds
+                                    label1 = new JLabel("Oh no you didn't, according to the universe you is too cool (<_<(\n");
+                                    add(label1);
+                                } else {
+                                    label1.setText(String.format("Temperature from %s to %s is: %f", ComboBoxResult, ComboBoxResult2, answer));
+                                    //     label1 = new JLabel(String.format("Temperature from %s to %s is: %f\n", ComboBoxResult, ComboBoxResult2, answer));
+                                    add(label1);
+                                }
+                    }
                 }
         ); // end  addActionListener
-    //    runMenu.setBackground(Color.LIGHT_GRAY);
+        runMenu.setBackground(Color.white);
         bar.add( runMenu ); // add file menu to menu bar
 //bar.add(new JButton());
 /////////////////////////////////////// Temp Program ///////////////////////////////////
