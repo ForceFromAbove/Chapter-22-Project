@@ -49,11 +49,51 @@ public class Gooey extends JFrame {
     private final JComboBox<String> defaultJComboBox;
     private final JComboBox<String> defaultJComboBox2;
 
-    private static final String[] Temp = {"Fahrenheit", "Celsius", "Kelvin"};      // name of RadioButton/ComboBox labels
+    private static final String[] Temp = {"Temperature From...", "Fahrenheit", "Celsius", "Kelvin"};      // name of RadioButton/ComboBox labels
+    private static final String[] Temp2 = {"Temperature To...", "Fahrenheit", "Celsius", "Kelvin"};      // name of RadioButton/ComboBox labels
+
+    /* private JButton buttons[]; // array of buttons to hide portions
+    private final String names[] = { "Hide North", "Hide South",
+            "Hide East", "Hide West", "Hide Center" };
+    private BorderLayout layout; // borderlayout object */
+
+    private GridLayout gridLayout; // first gridlayout
 
     public Gooey() {
 
         super("Temperature Conversion Program");
+
+        gridLayout = new GridLayout(3,2,10,20);
+        setLayout(gridLayout);
+        /*add(new JTextField("Temp1"));
+        add(new JComboBox<String>(Temp));
+        add(new JComboBox<String>(Temp));
+        add(new JLabel("Temp2")); */
+
+        /*
+        layout = new BorderLayout( 5, 5 ); // 5 pixel gaps
+        setLayout( layout ); // set frame layout
+        buttons = new JButton[ names.length ]; // set size of array
+
+        // create JButtons and register listeners for them
+        for ( int count = 0; count < names.length; count++ )
+        {
+            buttons[ count ] = new JButton( names[ count ] );
+          //  buttons[ count ].addActionListener( this );
+        } // end for
+/*
+        add( buttons[ 0 ], BorderLayout.NORTH ); // add button to north
+        add( buttons[ 1 ], BorderLayout.SOUTH ); // add button to south
+        add( buttons[ 2 ], BorderLayout.EAST ); // add button to east
+        add( buttons[ 3 ], BorderLayout.WEST ); // add button to west
+        add( buttons[ 4 ], BorderLayout.CENTER ); // add button to center
+        */ /*
+        add(new JTextField("Temp1"), BorderLayout.NORTH);
+        add(new JComboBox<String>(Temp), BorderLayout.EAST);
+        add(new JComboBox<String>(Temp), BorderLayout.WEST);
+        add(new JLabel("Temp2"), BorderLayout.SOUTH);
+
+ //   layout.layoutContainer( getContentPane() ); */
 
 /////////////////////////////////////// Exit ///////////////////////////////////
         JButton exitMenu = new JButton( "Exit" ); // create 'Exit' on menu
@@ -270,9 +310,22 @@ public class Gooey extends JFrame {
 //bar.add(new JButton());
 /////////////////////////////////////// Temp Program ///////////////////////////////////
 
-        setLayout(new FlowLayout());
+    //    setLayout(new FlowLayout());
 
-        textField = new JTextField("Temperature", 25);
+        Font myFont = new Font("Serif", Font.PLAIN, 24);
+
+        label1.setFont(myFont);
+
+        JLabel title1 = new JLabel("Input and Output Temperatures:");
+        title1.setFont(myFont);
+        add (title1);
+        JLabel title2 = new JLabel("Temperature From and Temperature To:");
+        title2.setFont(myFont);
+        add (title2);
+
+
+        textField = new JTextField("Temperature to Convert", 25);
+        textField.setFont(myFont);
         add(textField);
 
         textField.addActionListener(new ActionListener() {
@@ -339,7 +392,7 @@ public class Gooey extends JFrame {
 
 //////////////////////////////////// Adds ComboBox //////////////////////////////////
         defaultJComboBox = new JComboBox<String>(Temp);
-        defaultJComboBox.setMaximumRowCount(3);
+        defaultJComboBox.setMaximumRowCount(4);
 
         //Create the combo box, select item at index 0.
         defaultJComboBox.setSelectedIndex(0);
@@ -361,12 +414,12 @@ public class Gooey extends JFrame {
                 }
             }
         });
-
+        defaultJComboBox.setFont(myFont);
         add(defaultJComboBox);
 
 //////////////////////////////////// Adds ComboBox2 //////////////////////////////////
-        defaultJComboBox2 = new JComboBox<String>(Temp);
-        defaultJComboBox2.setMaximumRowCount(3);
+        defaultJComboBox2 = new JComboBox<String>(Temp2);
+        defaultJComboBox2.setMaximumRowCount(4);
 
         //Create the combo box, select item at index 0.
         defaultJComboBox2.setSelectedIndex(0);
@@ -389,10 +442,12 @@ public class Gooey extends JFrame {
             }
         });
 
+        defaultJComboBox2.setFont(myFont);
         add(defaultJComboBox2);
 
         label1 = new JLabel(String.format("Temperature from %s to %s is: %f", ComboBoxResult, ComboBoxResult2, answer));
         label1.setToolTipText("This is what you wanted, be happy! ^.^");    // roll over text for label1
+        label1.setFont(myFont);
         add(label1);
     }
 }
