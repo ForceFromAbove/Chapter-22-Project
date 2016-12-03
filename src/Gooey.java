@@ -9,12 +9,13 @@ import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import javax.swing.JOptionPane;
 import java.net.URL;
 import java.util.InputMismatchException;
+import java.util.function.BooleanSupplier;
 import javax.swing.JFrame;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.ButtonGroup;
@@ -23,6 +24,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JMenuBar;
 import javax.swing.*;
 import javax.imageio.*;
+import javax.swing.SwingUtilities;
 
 public class Gooey extends JFrame {
 
@@ -43,6 +45,9 @@ public class Gooey extends JFrame {
     double answer = 0;                  // used as the answer
     boolean out_Of_Bounds = false;      // used for out of bounds
 
+    Boolean sameInput = false;
+    Boolean outofboundsflag = false;
+
     private String ComboBoxResult = "";
     private String ComboBoxResult2 = "";
 
@@ -51,6 +56,22 @@ public class Gooey extends JFrame {
 
     private static final String[] Temp = {"Temperature From...", "Fahrenheit", "Celsius", "Kelvin"};      // name of RadioButton/ComboBox labels
     private static final String[] Temp2 = {"Temperature To...", "Fahrenheit", "Celsius", "Kelvin"};      // name of RadioButton/ComboBox labels
+
+  //  private final UIManager.LookAndFeelInfo[] looks;
+
+    // Look and Feel variables
+    private final UIManager.LookAndFeelInfo[] looks;
+    private final String[] lookNames;
+
+    // Function for change in Look and Feel
+    private void changeTheLookAndFeel(int value) {
+        try {
+            UIManager.setLookAndFeel(looks[value].getClassName());
+            SwingUtilities.updateComponentTreeUI(this);
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
+    }
 
     /* private JButton buttons[]; // array of buttons to hide portions
     private final String names[] = { "Hide North", "Hide South",
@@ -62,6 +83,8 @@ public class Gooey extends JFrame {
     public Gooey() {
 
         super("Temperature Conversion Program");
+
+       // looks = UIManager.getInstalledLookAndFeels();
 
         gridLayout = new GridLayout(3,2,10,20);
         setLayout(gridLayout);
@@ -151,12 +174,55 @@ public class Gooey extends JFrame {
                 }
         ); // end call to addActionListener
 
+/////////////////////////////////////// Change Format ///////////////////////////////////
         // create change settings type menu item
-        JMenuItem settingsItem = new JMenuItem( "Change Format Type" );
-        settingsItem.setMnemonic( 'f' ); // set mnemonic to f
-        helpMenu.add( settingsItem ); // add about item to file menu
+        JMenu settings = new JMenu( "Change Format Type" );
+        settings.setMnemonic( 'f' ); // set mnemonic to f
+        helpMenu.add( settings ); // add about item to file menu
 
-        settingsItem.addActionListener(
+        JMenu lookandfeel = new JMenu("LookAndFeel");
+        lookandfeel.setMnemonic( 'l' ); // set mnemonic to l
+        settings.add( lookandfeel ); // add about item to file menu
+
+        JMenuItem nimbus = new JMenuItem("Nimbus");
+        nimbus.setMnemonic( 'n' ); // set mnemonic to l
+        lookandfeel.add( nimbus ); // add about item to file menu
+
+        JMenuItem radiodropdown = new JMenuItem("Radio Button/Dropdown Box Toggle");
+        radiodropdown.setMnemonic( 't' ); // set mnemonic to t
+        settings.add( radiodropdown ); // add about item to file menu
+
+        nimbus.addActionListener(
+
+                new ActionListener() // anonymous inner class
+                {
+                    // display message dialog when user selects About...
+                    public void actionPerformed( ActionEvent event )
+                    {
+                        try {
+                         //  UIManager.setLookAndFeel(javax.swing.plaf.metal.MetalLookAndFeel);
+                            UIManager.setLookAndFeel(looks[2].getClassName());
+                     //       SwingUtilities.updateComponentTreeUI(com.sun.java.swing.plaf.windows.WindowsLookAndFeel);
+                   //        SwingUtilities.updateComponentTreeUI(this);
+                            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+                            UIManager.setLookAndFeel("javax.swing.plaf.nimbusLookAndFeel");
+                    //        new SwingApplication();
+                            UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+
+                         //   changeTheLookAndFeel(1);
+
+                            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+
+                        } catch (Exception exception ) {
+                           // exception.printStackTrace();
+                            exception.printStackTrace();
+                        }
+
+                    } // end method actionPerformed
+                }
+        ); // end call to addActionListener
+
+        radiodropdown.addActionListener(
 
                 new ActionListener() // anonymous inner class
                 {
@@ -188,7 +254,7 @@ public class Gooey extends JFrame {
         defaultItem.setMnemonic( 'd' ); // set mnemonic to d
         helpMenu.add( defaultItem ); // add about item to file menu
 
-        settingsItem.addActionListener(
+        defaultItem.addActionListener(
 
                 new ActionListener() // anonymous inner class
                 {
@@ -232,6 +298,7 @@ public class Gooey extends JFrame {
                         answer = 0;
 
                         label1 = new JLabel(String.format("Temperature from %s to %s is: %f", ComboBoxResult, ComboBoxResult2, answer));
+                        add(label1);
 
                     } // end method actionPerformed
                 }
@@ -270,44 +337,81 @@ public class Gooey extends JFrame {
                                     System.exit(1);
                                 }
 
-                                switch (ComboBoxResult2) {
-                                    case "Fahrenheit":                                              // gets answer from Temp_Conversion and checks for valid value
-                                        answer = temp_conversion.getFahrenheit();
-                                        if (answer < -459.67) {
-                                            out_Of_Bounds = true;
-                                        }
-                                        break;
-                                    case "Celsius":
-                                        answer = temp_conversion.getCelsius();
-                                        if (answer < -273.15) {
-                                            out_Of_Bounds = true;
-                                        }
-                                        break;
-                                    case "Kelvin":
-                                        answer = temp_conversion.getKelvin();
-                                        if (answer < 0) {
-                                            out_Of_Bounds = true;
-                                        }
-                                        break;
+                        switch (ComboBoxResult2) {
+                            case "Fahrenheit":                                              // gets answer from Temp_Conversion and checks for valid value
+                                answer = temp_conversion.getFahrenheit();
+                                int temperatureF = (int) answer;
+                                if (answer < -459.67) {
+                                    out_Of_Bounds = true;
                                 }
+                                if (answer >= 212) {
+                                    getContentPane().setBackground(new Color(255, 0, 11));
+                                }
+                                if (answer <= 32) {
+                                    getContentPane().setBackground(new Color(11, 0, 255));
+                                }
+                                if (answer < 212 && answer > 32) {
+                                    getContentPane().setBackground(new Color((11 + temperatureF), 0, (255 - temperatureF + 11)));
+                                }
+                                break;
+                            case "Celsius":
+                                answer = temp_conversion.getCelsius();
+                                if (answer < -273.15) {
+                                    out_Of_Bounds = true;
+                                }
+                                int temperatureC = (int) answer;
+                                if (answer >= 100) {
+                                    getContentPane().setBackground(new Color(255, 0, 11));
+                                }
+                                if (answer <= 0) {
+                                    getContentPane().setBackground(new Color(11, 0, 255));
+                                }
+                                if (answer < 100 && answer > 0) {
+                                    getContentPane().setBackground(new Color((30 + temperatureC*2), 0, (255 - temperatureC*2)));
+                                }
+                                break;
+                            case "Kelvin":
+                                answer = temp_conversion.getKelvin();
+                                if (answer < 0) {
+                                    out_Of_Bounds = true;
+                                }
+                                int temperatureK = (int) (answer - 273.15);
+                                if (answer >= 373.15) {
+                                    getContentPane().setBackground(new Color(255, 0, 11));
+                                }
+                                if (answer <= 273.15) {
+                                    getContentPane().setBackground(new Color(11, 0, 255));
+                                }
+                                if (answer < 373.15 && answer > 273.15) {
+                                    getContentPane().setBackground(new Color((30 + temperatureK*2), 0, (255 - temperatureK*2)));
+                                }
+                                break;
+                        }
 
-                                if (ComboBoxResult == ComboBoxResult2) {                                                    // no real conversion is happening
-                                    label1 = new JLabel("I don't know what you expected...\n");
-                                    add(label1);
-                                } else if (out_Of_Bounds) {                                                                 // temperatures are out of bounds
-                                    label1 = new JLabel("Oh no you didn't, according to the universe you is too cool (<_<(\n");
-                                    add(label1);
-                                } else {
-                                    label1.setText(String.format("Temperature from %s to %s is: %f", ComboBoxResult, ComboBoxResult2, answer));
-                                    //     label1 = new JLabel(String.format("Temperature from %s to %s is: %f\n", ComboBoxResult, ComboBoxResult2, answer));
-                                    add(label1);
-                                }
+                        if (ComboBoxResult == ComboBoxResult2) {                                                    // no real conversion is happening
+                            //  label1 = new JLabel("I don't know what you expected...\n");
+                            //  add(label1);
+                            sameInput = true;
+                        } else if (out_Of_Bounds) {                                                                 // temperatures are out of bounds
+                            //  label1 = new JLabel("Oh no you didn't, according to the universe you is too cool (<_<(\n");
+                            //  add(label1);
+                            outofboundsflag = true;
+                        } else {
+                            label1.setText(String.format("Temperature from %s to %s is: %f", ComboBoxResult, ComboBoxResult2, answer));
+                            //     label1 = new JLabel(String.format("Temperature from %s to %s is: %f\n", ComboBoxResult, ComboBoxResult2, answer));
+                            //  add(label1);
+                        }
                     }
                 }
         ); // end  addActionListener
         runMenu.setBackground(Color.white);
         bar.add( runMenu ); // add file menu to menu bar
 //bar.add(new JButton());
+
+        looks = UIManager.getInstalledLookAndFeels();
+        lookNames = new String[looks.length];
+
+
 /////////////////////////////////////// Temp Program ///////////////////////////////////
 
         Font headerFont = new Font("Serif", Font.BOLD, 24);
@@ -351,7 +455,7 @@ public class Gooey extends JFrame {
 
                 } catch (InputMismatchException e) {
                     System.out.println("Can you please put in a number?");                 // Error message if not a number
-                    System.exit(1);
+               //     System.exit(1);
                 }
 
                 switch (ComboBoxResult2) {
@@ -406,17 +510,18 @@ public class Gooey extends JFrame {
                 }
 
                 if (ComboBoxResult == ComboBoxResult2) {                                                    // no real conversion is happening
-                    label1 = new JLabel("I don't know what you expected...\n");
-                    add(label1);
+                  //  label1 = new JLabel("I don't know what you expected...\n");
+                  //  add(label1);
+                    sameInput = true;
                 } else if (out_Of_Bounds) {                                                                 // temperatures are out of bounds
-                    label1 = new JLabel("Oh no you didn't, according to the universe you is too cool (<_<(\n");
-                    add(label1);
+                  //  label1 = new JLabel("Oh no you didn't, according to the universe you is too cool (<_<(\n");
+                  //  add(label1);
+                    outofboundsflag = true;
                 } else {
                     label1.setText(String.format("Temperature from %s to %s is: %f", ComboBoxResult, ComboBoxResult2, answer));
                     //     label1 = new JLabel(String.format("Temperature from %s to %s is: %f\n", ComboBoxResult, ComboBoxResult2, answer));
-                    add(label1);
+                   //  add(label1);
                 }
-
             }
             //label1.setText("Temperature from %s to %s is: %f", ComboBoxResult, RadioButtonResult, Temperature);
             //       label1.setText("%f", Temperature);
@@ -477,12 +582,22 @@ public class Gooey extends JFrame {
         defaultJComboBox2.setFont(myFont);
         add(defaultJComboBox2);
 
-        label1 = new JLabel(String.format("Temperature from %s to %s is: %f", ComboBoxResult, ComboBoxResult2, answer));
+
+        if (sameInput) {
+            label1 = new JLabel("I don't know what you expected...\n");
+            sameInput = false;
+        }
+        if (outofboundsflag) {
+            label1 = new JLabel("Oh no you didn't, according to the universe you is too cool (<_<(\n");
+            outofboundsflag = false;
+        }
+        else {
+            label1 = new JLabel(String.format("Temperature from %s to %s is: %f", ComboBoxResult, ComboBoxResult2, answer));
+        }
         label1.setToolTipText("This is what you wanted, be happy! ^.^");    // roll over text for label1
         label1.setFont(myFont);
         add(label1);
 
-        //getContentPane().setBackground( new Color() );
     }
 }
 
