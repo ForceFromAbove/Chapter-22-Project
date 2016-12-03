@@ -433,7 +433,7 @@ public class Gooey extends JFrame {
         textField = new JTextField("Temperature to Convert", 25);
         textField.setFont(myFont);
         add(textField);
-
+/*
         textField.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
@@ -526,7 +526,7 @@ public class Gooey extends JFrame {
             //label1.setText("Temperature from %s to %s is: %f", ComboBoxResult, RadioButtonResult, Temperature);
             //       label1.setText("%f", Temperature);
         });
-
+ */
 //////////////////////////////////// Adds ComboBox //////////////////////////////////
         defaultJComboBox = new JComboBox<String>(Temp);
         defaultJComboBox.setMaximumRowCount(4);
