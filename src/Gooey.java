@@ -25,18 +25,11 @@ import javax.swing.JMenuBar;
 import javax.swing.*;
 import javax.imageio.*;
 import javax.swing.SwingUtilities;
+import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
+import javax.swing.UIManager;
 
 public class Gooey extends JFrame {
-
-    private final Color colorValues[] =
-            { Color.BLACK, Color.BLUE, Color.RED, Color.GREEN };
-    private JRadioButtonMenuItem colorItems[]; // color menu items
-    private JRadioButtonMenuItem fonts[]; // font menu items
-    private JCheckBoxMenuItem styleItems[]; // font style menu items
-    private JLabel displayJLabel; // displays sample text
-    private ButtonGroup fontButtonGroup; // manages font menu items
-    private ButtonGroup colorButtonGroup; // manages color menu items
-    private int style; // used to create style for font
 
     private final JTextField textField;
     private JLabel label1 = new JLabel("Hi");    // label with just text
@@ -45,23 +38,25 @@ public class Gooey extends JFrame {
     double answer = 0;                  // used as the answer
     boolean out_Of_Bounds = false;      // used for out of bounds
 
-    Boolean sameInput = false;
+    Boolean sameInput = false;                      // error flags
     Boolean outofboundsflag = false;
 
-    private String ComboBoxResult = "";
+    private String ComboBoxResult = "";             // for the two combo boxes to go to and from temperatures
     private String ComboBoxResult2 = "";
 
     private final JComboBox<String> defaultJComboBox;
     private final JComboBox<String> defaultJComboBox2;
 
-    private static final String[] Temp = {"Temperature From...", "Fahrenheit", "Celsius", "Kelvin"};      // name of RadioButton/ComboBox labels
-    private static final String[] Temp2 = {"Temperature To...", "Fahrenheit", "Celsius", "Kelvin"};      // name of RadioButton/ComboBox labels
+    private static final String[] Temp = {"Temperature From...", "Fahrenheit", "Celsius", "Kelvin"};      // name of RadioButton/ComboBox labels for "to from"
+    private static final String[] Temp2 = {"Temperature To...", "Fahrenheit", "Celsius", "Kelvin"};      // name of RadioButton/ComboBox labels for "to temp"
 
   //  private final UIManager.LookAndFeelInfo[] looks;
 
     // Look and Feel variables
     private final UIManager.LookAndFeelInfo[] looks;
     private final String[] lookNames;
+    private JRadioButton radio[] = new JRadioButton[5]; // radiobuttons to select look and feel (5 options)
+    private ButtonGroup group; // group for radiobuttons
 
     // Function for change in Look and Feel
     private void changeTheLookAndFeel(int value) {
@@ -73,50 +68,22 @@ public class Gooey extends JFrame {
         }
     }
 
-    /* private JButton buttons[]; // array of buttons to hide portions
-    private final String names[] = { "Hide North", "Hide South",
-            "Hide East", "Hide West", "Hide Center" };
-    private BorderLayout layout; // borderlayout object */
-
     private GridLayout gridLayout; // first gridlayout
 
-    public Gooey() {
+    public Gooey() {                                    // main program
 
         super("Temperature Conversion Program");
 
        // looks = UIManager.getInstalledLookAndFeels();
 
-        gridLayout = new GridLayout(3,2,10,20);
+        gridLayout = new GridLayout(3,2,10,20);             // 3 by 2 grid with spacing layout
         setLayout(gridLayout);
-        /*add(new JTextField("Temp1"));
-        add(new JComboBox<String>(Temp));
-        add(new JComboBox<String>(Temp));
-        add(new JLabel("Temp2")); */
 
-        /*
-        layout = new BorderLayout( 5, 5 ); // 5 pixel gaps
-        setLayout( layout ); // set frame layout
-        buttons = new JButton[ names.length ]; // set size of array
+        looks = UIManager.getInstalledLookAndFeels();
+        lookNames = new String[looks.length];
 
-        // create JButtons and register listeners for them
-        for ( int count = 0; count < names.length; count++ )
-        {
-            buttons[ count ] = new JButton( names[ count ] );
-          //  buttons[ count ].addActionListener( this );
-        } // end for
-/*
-        add( buttons[ 0 ], BorderLayout.NORTH ); // add button to north
-        add( buttons[ 1 ], BorderLayout.SOUTH ); // add button to south
-        add( buttons[ 2 ], BorderLayout.EAST ); // add button to east
-        add( buttons[ 3 ], BorderLayout.WEST ); // add button to west
-        add( buttons[ 4 ], BorderLayout.CENTER ); // add button to center
-        */ /*
-        add(new JTextField("Temp1"), BorderLayout.NORTH);
-        add(new JComboBox<String>(Temp), BorderLayout.EAST);
-        add(new JComboBox<String>(Temp), BorderLayout.WEST);
-        add(new JLabel("Temp2"), BorderLayout.SOUTH);
-
- //   layout.layoutContainer( getContentPane() ); */
+        for(int i = 0; i < looks.length; i++)
+            lookNames[i] = looks[i].getName();
 
 /////////////////////////////////////// Exit ///////////////////////////////////
         JButton exitMenu = new JButton( "Exit" ); // create 'Exit' on menu
@@ -133,26 +100,26 @@ public class Gooey extends JFrame {
                 }
         ); // end  addActionListener
 
-        JMenuBar bar = new JMenuBar(); // create menu bar
-        setJMenuBar( bar ); // add menu bar to application
-        exitMenu.setBackground(Color.white);
-        bar.add( exitMenu ); // add file menu to menu bar
+        JMenuBar bar = new JMenuBar();          // create menu bar
+        setJMenuBar( bar );                     // add menu bar to application
+        exitMenu.setBackground(Color.white);    // makes bar white
+        bar.add( exitMenu );                    // add exit to menu bar
 
 /////////////////////////////////////// Help ///////////////////////////////////
-        JMenu helpMenu = new JMenu( "Help" ); // create 'Help' on menu
-        helpMenu.setMnemonic( 'h' ); // set Help mnemonic to h
+        JMenu helpMenu = new JMenu( "Help" );   // create 'Help' on menu
+        helpMenu.setMnemonic( 'h' );            // set Help mnemonic to h
 
         // create About... menu item
         JMenuItem aboutItem = new JMenuItem( "About..." );
-        aboutItem.setMnemonic( 'a' ); // set mnemonic to A
-        helpMenu.add( aboutItem ); // add about item to file menu
+        aboutItem.setMnemonic( 'a' );   // set mnemonic to a
+        helpMenu.add( aboutItem );      // add about item to menu
 
         aboutItem.addActionListener(
 
                 new ActionListener() // anonymous inner class
                 {
                     // display message dialog when user selects About...
-                    public void actionPerformed( ActionEvent event )
+                    public void actionPerformed( ActionEvent event )        // message dialog for about part of menu
                     {
                         try {
                             final ImageIcon icon = new ImageIcon(ImageIO.read(new URL("http://i3.kym-cdn.com/photos/images/original/001/093/601/0af.jpg")));
@@ -162,10 +129,10 @@ public class Gooey extends JFrame {
                                             "Version Number: 9000.0.1\n" +
                                             "Release Date: April/7/1995\n" +
                                             "Tech Support: 0118-999-881-999-119-725... 3\n" +
-                                            "Website: https://goo.gl/01oGev\n",                     // can you do URL link easily?
+                                            "Website: https://goo.gl/01oGev\n",
                                     "About", JOptionPane.INFORMATION_MESSAGE, icon);
 
-                        } catch (MalformedURLException e) {
+                        } catch (MalformedURLException e) {         // catches for if the URL fails
                             System.exit(1);
                         } catch (IOException e) {
                             System.exit(2);
@@ -177,22 +144,41 @@ public class Gooey extends JFrame {
 /////////////////////////////////////// Change Format ///////////////////////////////////
         // create change settings type menu item
         JMenu settings = new JMenu( "Change Format Type" );
-        settings.setMnemonic( 'f' ); // set mnemonic to f
-        helpMenu.add( settings ); // add about item to file menu
+        settings.setMnemonic( 'f' );    // set mnemonic to f
+        helpMenu.add( settings );       // add change item to menu
 
         JMenu lookandfeel = new JMenu("LookAndFeel");
         lookandfeel.setMnemonic( 'l' ); // set mnemonic to l
-        settings.add( lookandfeel ); // add about item to file menu
+        settings.add( lookandfeel );    // add lookandfeel item to menu
 
-        JMenuItem nimbus = new JMenuItem("Nimbus");
+        group = new ButtonGroup();                  // button group for look and feels
+        ItemHandler handler = new ItemHandler();    // look and feel handler
+
+        for ( int count = 0; count < radio.length; count++ )
+        {
+            radio[ count ] = new JRadioButton( lookNames[ count ] );
+            radio[ count ].addItemListener( handler ); // add handler
+            group.add( radio[ count ] ); // add radiobutton to group
+            lookandfeel.add( radio[ count ] ); // add radiobutton to panel
+        } // end for
+
+        //radio = new JRadioButtonMenuItem[looks.length];
+        radio = new JRadioButton[looks.length];
+
+     /*   JMenuItem nimbus = new JMenuItem("Nimbus");
         nimbus.setMnemonic( 'n' ); // set mnemonic to l
-        lookandfeel.add( nimbus ); // add about item to file menu
+        lookandfeel.add( nimbus ); // add Nimbus item to menu */
 
         JMenuItem radiodropdown = new JMenuItem("Radio Button/Dropdown Box Toggle");
         radiodropdown.setMnemonic( 't' ); // set mnemonic to t
-        settings.add( radiodropdown ); // add about item to file menu
+        settings.add( radiodropdown ); // add radiodropdown item to menu
 
-        nimbus.addActionListener(
+
+
+
+
+
+      /*  nimbus.addActionListener(
 
                 new ActionListener() // anonymous inner class
                 {
@@ -220,30 +206,19 @@ public class Gooey extends JFrame {
 
                     } // end method actionPerformed
                 }
-        ); // end call to addActionListener
+        ); // end call to addActionListener */
 
         radiodropdown.addActionListener(
 
                 new ActionListener() // anonymous inner class
                 {
-                    // display message dialog when user selects About...
+                    // toggles radio button and drop down menu
                     public void actionPerformed( ActionEvent event )
                     {
                         try {
-                            final ImageIcon icon = new ImageIcon(ImageIO.read(new URL("http://i3.kym-cdn.com/photos/images/original/001/093/601/0af.jpg")));
-                            JOptionPane.showMessageDialog(new JFrame(),
-                                    "Program name: virus.exe\n" +
-                                            "Author: Abraham Lincoln\n" +
-                                            "Version Number: 9000.0.1\n" +
-                                            "Release Date: April/7/1995\n" +
-                                            "Tech Support: 0118-999-881-999-119-725... 3\n" +
-                                            "Website: https://goo.gl/01oGev\n",                     // can you do URL link easily?
-                                    "About", JOptionPane.INFORMATION_MESSAGE, icon);
-
-                        } catch (MalformedURLException e) {
+                            // not appearing in this program
+                        } catch (Exception exception) {
                             System.exit(1);
-                        } catch (IOException e) {
-                            System.exit(2);
                         }
                     } // end method actionPerformed
                 }
@@ -252,36 +227,25 @@ public class Gooey extends JFrame {
         // create change settings type menu item
         JMenuItem defaultItem = new JMenuItem( "Reset to Default Settings" );
         defaultItem.setMnemonic( 'd' ); // set mnemonic to d
-        helpMenu.add( defaultItem ); // add about item to file menu
+        helpMenu.add( defaultItem ); // add default item to menu
 
         defaultItem.addActionListener(
 
                 new ActionListener() // anonymous inner class
                 {
-                    // display message dialog when user selects About...
+                    // goes back to default settings
                     public void actionPerformed( ActionEvent event )
                     {
                         try {
-                            final ImageIcon icon = new ImageIcon(ImageIO.read(new URL("http://i3.kym-cdn.com/photos/images/original/001/093/601/0af.jpg")));
-                            JOptionPane.showMessageDialog(new JFrame(),
-                                    "Program name: virus.exe\n" +
-                                            "Author: Abraham Lincoln\n" +
-                                            "Version Number: 9000.0.1\n" +
-                                            "Release Date: April/7/1995\n" +
-                                            "Tech Support: 0118-999-881-999-119-725... 3\n" +
-                                            "Website: https://goo.gl/01oGev\n",                     // can you do URL link easily?
-                                    "About", JOptionPane.INFORMATION_MESSAGE, icon);
-
-                        } catch (MalformedURLException e) {
+                            // not appearing in this program
+                        } catch (Exception exception) {
                             System.exit(1);
-                        } catch (IOException e) {
-                            System.exit(2);
                         }
                     } // end method actionPerformed
                 }
         ); // end call to addActionListener
 
-        bar.add( helpMenu ); // add file menu to menu bar
+        bar.add( helpMenu ); // add help to menu bar
 
 /////////////////////////////////////// Clear ///////////////////////////////////
         JButton clearMenu = new JButton( "Clear" ); // create 'Clear' on menu
@@ -290,7 +254,7 @@ public class Gooey extends JFrame {
 
                 new ActionListener() // anonymous inner class
                 {
-                    // terminate application when user clicks Exit
+                    // clears content when user clicks clear
                     public void actionPerformed( ActionEvent event )
                     {
                         ComboBoxResult = "";
@@ -304,7 +268,7 @@ public class Gooey extends JFrame {
                 }
         ); // end  addActionListener
         clearMenu.setBackground(Color.white);
-        bar.add( clearMenu ); // add file menu to menu bar
+        bar.add( clearMenu ); // add menu to menu bar
 
 /////////////////////////////////////// Run ///////////////////////////////////
         JButton runMenu = new JButton( "Run"); // create 'Run' on menu
@@ -313,7 +277,7 @@ public class Gooey extends JFrame {
 
                 new ActionListener() // anonymous inner class
                 {
-                    // terminate application when user clicks Exit
+                    // runs program
                     public void actionPerformed( ActionEvent event )
                     {
                                 try {
@@ -344,7 +308,7 @@ public class Gooey extends JFrame {
                                 if (answer < -459.67) {
                                     out_Of_Bounds = true;
                                 }
-                                if (answer >= 212) {
+                                if (answer >= 212) {                                        //
                                     getContentPane().setBackground(new Color(255, 0, 11));
                                 }
                                 if (answer <= 32) {
@@ -405,11 +369,11 @@ public class Gooey extends JFrame {
                 }
         ); // end  addActionListener
         runMenu.setBackground(Color.white);
-        bar.add( runMenu ); // add file menu to menu bar
+        bar.add( runMenu ); // add menu to menu bar
 //bar.add(new JButton());
 
-        looks = UIManager.getInstalledLookAndFeels();
-        lookNames = new String[looks.length];
+     //   looks = UIManager.getInstalledLookAndFeels();
+      //  lookNames = new String[looks.length];
 
 
 /////////////////////////////////////// Temp Program ///////////////////////////////////
@@ -599,7 +563,25 @@ public class Gooey extends JFrame {
         add(label1);
 
     }
+
+    private class ItemHandler implements ItemListener
+    {
+        // process user's look-and-feel selection
+        public void itemStateChanged( ItemEvent event )
+        {
+            for ( int count = 0; count < radio.length; count++ )
+            {
+                if ( radio[ count ].isSelected() )
+                {
+                    changeTheLookAndFeel( count ); // change look and feel
+                } // end if
+            } // end for
+        } // end method itemStateChanged
+    } // end private inner class ItemHandler
+
 }
+
+
 
 /**
  * Created by aaronewing on 12/1/2016.
