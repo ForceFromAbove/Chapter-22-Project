@@ -175,39 +175,6 @@ public class Gooey extends JFrame {
 
 
 
-
-
-
-      /*  nimbus.addActionListener(
-
-                new ActionListener() // anonymous inner class
-                {
-                    // display message dialog when user selects About...
-                    public void actionPerformed( ActionEvent event )
-                    {
-                        try {
-                         //  UIManager.setLookAndFeel(javax.swing.plaf.metal.MetalLookAndFeel);
-                            UIManager.setLookAndFeel(looks[2].getClassName());
-                     //       SwingUtilities.updateComponentTreeUI(com.sun.java.swing.plaf.windows.WindowsLookAndFeel);
-                   //        SwingUtilities.updateComponentTreeUI(this);
-                            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-                            UIManager.setLookAndFeel("javax.swing.plaf.nimbusLookAndFeel");
-                    //        new SwingApplication();
-                            UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
-
-                         //   changeTheLookAndFeel(1);
-
-                            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-
-                        } catch (Exception exception ) {
-                           // exception.printStackTrace();
-                            exception.printStackTrace();
-                        }
-
-                    } // end method actionPerformed
-                }
-        ); // end call to addActionListener */
-
         radiodropdown.addActionListener(
 
                 new ActionListener() // anonymous inner class
@@ -308,13 +275,13 @@ public class Gooey extends JFrame {
                                 if (answer < -459.67) {
                                     out_Of_Bounds = true;
                                 }
-                                if (answer >= 212) {                                        //
+                                if (answer >= 212) {                                        // if temperature boiling or above, be red
                                     getContentPane().setBackground(new Color(255, 0, 11));
                                 }
-                                if (answer <= 32) {
+                                if (answer <= 32) {                                         // if temperature freezing or below, be blue
                                     getContentPane().setBackground(new Color(11, 0, 255));
                                 }
-                                if (answer < 212 && answer > 32) {
+                                if (answer < 212 && answer > 32) {                          // be somewhere between blue and red if temp between freezing and boiling
                                     getContentPane().setBackground(new Color((11 + temperatureF), 0, (255 - temperatureF + 11)));
                                 }
                                 break;
@@ -324,13 +291,13 @@ public class Gooey extends JFrame {
                                     out_Of_Bounds = true;
                                 }
                                 int temperatureC = (int) answer;
-                                if (answer >= 100) {
+                                if (answer >= 100) {                                        // if temperature boiling or above, be red
                                     getContentPane().setBackground(new Color(255, 0, 11));
                                 }
-                                if (answer <= 0) {
+                                if (answer <= 0) {                                          // if temperature freezing or below, be blue
                                     getContentPane().setBackground(new Color(11, 0, 255));
                                 }
-                                if (answer < 100 && answer > 0) {
+                                if (answer < 100 && answer > 0) {                           // be somewhere between blue and red if temp between freezing and boiling
                                     getContentPane().setBackground(new Color((30 + temperatureC*2), 0, (255 - temperatureC*2)));
                                 }
                                 break;
@@ -340,157 +307,53 @@ public class Gooey extends JFrame {
                                     out_Of_Bounds = true;
                                 }
                                 int temperatureK = (int) (answer - 273.15);
-                                if (answer >= 373.15) {
+                                if (answer >= 373.15) {                                     // if temperature boiling or above, be red
                                     getContentPane().setBackground(new Color(255, 0, 11));
                                 }
-                                if (answer <= 273.15) {
+                                if (answer <= 273.15) {                                     // if temperature freezing or below, be blue
                                     getContentPane().setBackground(new Color(11, 0, 255));
                                 }
-                                if (answer < 373.15 && answer > 273.15) {
+                                if (answer < 373.15 && answer > 273.15) {                   // be somewhere between blue and red if temp between freezing and boiling
                                     getContentPane().setBackground(new Color((30 + temperatureK*2), 0, (255 - temperatureK*2)));
                                 }
                                 break;
                         }
 
                         if (ComboBoxResult == ComboBoxResult2) {                                                    // no real conversion is happening
-                            //  label1 = new JLabel("I don't know what you expected...\n");
-                            //  add(label1);
-                            sameInput = true;
+                            sameInput = true;                                                               // flag if same conversion
                         } else if (out_Of_Bounds) {                                                                 // temperatures are out of bounds
-                            //  label1 = new JLabel("Oh no you didn't, according to the universe you is too cool (<_<(\n");
-                            //  add(label1);
-                            outofboundsflag = true;
+                            outofboundsflag = true;                                                         // flag if invalid temperature
                         } else {
                             label1.setText(String.format("Temperature from %s to %s is: %f", ComboBoxResult, ComboBoxResult2, answer));
-                            //     label1 = new JLabel(String.format("Temperature from %s to %s is: %f\n", ComboBoxResult, ComboBoxResult2, answer));
-                            //  add(label1);
                         }
                     }
                 }
         ); // end  addActionListener
         runMenu.setBackground(Color.white);
         bar.add( runMenu ); // add menu to menu bar
-//bar.add(new JButton());
-
-     //   looks = UIManager.getInstalledLookAndFeels();
-      //  lookNames = new String[looks.length];
-
 
 /////////////////////////////////////// Temp Program ///////////////////////////////////
 
         Font headerFont = new Font("Serif", Font.BOLD, 24);
         Font myFont = new Font("Serif", Font.PLAIN, 24);
 
-        label1.setFont(myFont);
+        label1.setFont(myFont);                                                     // makes the font for label1 (output text)
 
         JLabel title1 = new JLabel("Input and Output Temperatures:");
         title1.setFont(headerFont);
-        add (title1);
+        add (title1);                                                               // makes text for header 1
         JLabel title2 = new JLabel("Temperature From and Temperature To:");
         title2.setFont(headerFont);
-        add (title2);
+        add (title2);                                                               // makes text for header 2
 
-        boolean freezing = false;
+        boolean freezing = false;                                                   // temperature flags
         boolean boiling = false;
         boolean paperFire = false;
 
         textField = new JTextField("Temperature to Convert", 25);
         textField.setFont(myFont);
-        add(textField);
-/*
-        textField.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent event) {
-                try {
-                    String temperature_Str = textField.getText();               // makes sure input is a number
-                    double temperature = Double.parseDouble(temperature_Str);
+        add(textField);                                                             // creates textfield
 
-                    switch (ComboBoxResult) {                                   // reads in temperature
-                        case "Fahrenheit":
-                            temp_conversion.setFahrenheit(temperature);
-                            break;
-                        case "Celsius":
-                            temp_conversion.setCelsius(temperature);
-                            break;
-                        case "Kelvin":
-                            temp_conversion.setKelvin(temperature);
-                            break;
-                    }
-
-                } catch (InputMismatchException e) {
-                    System.out.println("Can you please put in a number?");                 // Error message if not a number
-               //     System.exit(1);
-                }
-
-                switch (ComboBoxResult2) {
-                    case "Fahrenheit":                                              // gets answer from Temp_Conversion and checks for valid value
-                        answer = temp_conversion.getFahrenheit();
-                        int temperatureF = (int) answer;
-                        if (answer < -459.67) {
-                            out_Of_Bounds = true;
-                        }
-                        if (answer >= 212) {
-                            getContentPane().setBackground(new Color(255, 0, 11));
-                        }
-                        if (answer <= 32) {
-                            getContentPane().setBackground(new Color(11, 0, 255));
-                        }
-                        if (answer < 212 && answer > 32) {
-                            getContentPane().setBackground(new Color((11 + temperatureF), 0, (255 - temperatureF + 11)));
-                        }
-                        break;
-                    case "Celsius":
-                        answer = temp_conversion.getCelsius();
-                        if (answer < -273.15) {
-                            out_Of_Bounds = true;
-                        }
-                        int temperatureC = (int) answer;
-                        if (answer >= 100) {
-                            getContentPane().setBackground(new Color(255, 0, 11));
-                        }
-                        if (answer <= 0) {
-                            getContentPane().setBackground(new Color(11, 0, 255));
-                        }
-                        if (answer < 100 && answer > 0) {
-                            getContentPane().setBackground(new Color((30 + temperatureC*2), 0, (255 - temperatureC*2)));
-                        }
-                        break;
-                    case "Kelvin":
-                        answer = temp_conversion.getKelvin();
-                        if (answer < 0) {
-                            out_Of_Bounds = true;
-                        }
-                        int temperatureK = (int) (answer - 273.15);
-                        if (answer >= 373.15) {
-                            getContentPane().setBackground(new Color(255, 0, 11));
-                        }
-                        if (answer <= 273.15) {
-                            getContentPane().setBackground(new Color(11, 0, 255));
-                        }
-                        if (answer < 373.15 && answer > 273.15) {
-                            getContentPane().setBackground(new Color((30 + temperatureK*2), 0, (255 - temperatureK*2)));
-                        }
-                        break;
-                }
-
-                if (ComboBoxResult == ComboBoxResult2) {                                                    // no real conversion is happening
-                  //  label1 = new JLabel("I don't know what you expected...\n");
-                  //  add(label1);
-                    sameInput = true;
-                } else if (out_Of_Bounds) {                                                                 // temperatures are out of bounds
-                  //  label1 = new JLabel("Oh no you didn't, according to the universe you is too cool (<_<(\n");
-                  //  add(label1);
-                    outofboundsflag = true;
-                } else {
-                    label1.setText(String.format("Temperature from %s to %s is: %f", ComboBoxResult, ComboBoxResult2, answer));
-                    //     label1 = new JLabel(String.format("Temperature from %s to %s is: %f\n", ComboBoxResult, ComboBoxResult2, answer));
-                   //  add(label1);
-                }
-            }
-            //label1.setText("Temperature from %s to %s is: %f", ComboBoxResult, RadioButtonResult, Temperature);
-            //       label1.setText("%f", Temperature);
-        });
- */
 //////////////////////////////////// Adds ComboBox //////////////////////////////////
         defaultJComboBox = new JComboBox<String>(Temp);
         defaultJComboBox.setMaximumRowCount(4);
@@ -516,7 +379,7 @@ public class Gooey extends JFrame {
             }
         });
         defaultJComboBox.setFont(myFont);
-        add(defaultJComboBox);
+        add(defaultJComboBox);                                              // adds combobox
 
 //////////////////////////////////// Adds ComboBox2 //////////////////////////////////
         defaultJComboBox2 = new JComboBox<String>(Temp2);
@@ -544,18 +407,18 @@ public class Gooey extends JFrame {
         });
 
         defaultJComboBox2.setFont(myFont);
-        add(defaultJComboBox2);
+        add(defaultJComboBox2);                                                 // adds combobox2
 
 
-        if (sameInput) {
+        if (sameInput) {                                                        // error message for same temperature conversions
             label1 = new JLabel("I don't know what you expected...\n");
             sameInput = false;
         }
-        if (outofboundsflag) {
+        if (outofboundsflag) {                                                  // error message for invalid temperature
             label1 = new JLabel("Oh no you didn't, according to the universe you is too cool (<_<(\n");
             outofboundsflag = false;
         }
-        else {
+        else {                                                                  // normal text output
             label1 = new JLabel(String.format("Temperature from %s to %s is: %f", ComboBoxResult, ComboBoxResult2, answer));
         }
         label1.setToolTipText("This is what you wanted, be happy! ^.^");    // roll over text for label1
@@ -564,7 +427,7 @@ public class Gooey extends JFrame {
 
     }
 
-    private class ItemHandler implements ItemListener
+    private class ItemHandler implements ItemListener                       // listener for radio button, currently broken
     {
         // process user's look-and-feel selection
         public void itemStateChanged( ItemEvent event )
@@ -576,12 +439,9 @@ public class Gooey extends JFrame {
                     changeTheLookAndFeel( count ); // change look and feel
                 } // end if
             } // end for
-        } // end method itemStateChanged
+        }
     } // end private inner class ItemHandler
-
 }
-
-
 
 /**
  * Created by aaronewing on 12/1/2016.
